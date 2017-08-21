@@ -1,0 +1,80 @@
+<script>
+  function addDevice() {
+    // Check if all fields are set
+    if (!document.getElementById('name').value || !document.getElementById('host').value || !document.getElementById('port').value) {
+      // One or multiple fields are empty
+      Homey.alert(__('pair.start.required'), 'error');
+    } else {
+      // Check with driver if settings are valid
+
+      var portVal;
+      if (typeof document.getElementById('port').value != 'undefined') portVal = 3306
+      else portVal = document.getElementById('port').value;
+
+      Homey.emit('check', {
+        // Get settings from fields
+        'name': document.getElementById('name').value,
+        'host': document.getElementById('host').value,
+        'port': portVal,
+        'username': document.getElementById('username').value,
+        'password': document.getElementById('password').value,
+        'db': document.getElementById('db').value
+      }, function (err, result) {
+        // Got response back
+        if (result) {
+          // Connection test completed successfully, add the device
+          Homey.addDevice({
+            data: {
+              id: document.getElementById('host').value + ':' + document.getElementById('port').value + ':' + document.getElementById('db').value
+            },
+            name: document.getElementById('name').value,
+            settings: {
+                'host': document.getElementById('host').value,
+                'port': document.getElementById('port').value,
+                'username': document.getElementById('username').value,
+                'password': document.getElementById('password').value,
+                'db': document.getElementById('db').value
+            }
+          }, function (err, result) {
+            if (err)
+              return Homey.alert(err, 'error');
+            Homey.done();
+          });
+        } else {
+          Homey.alert(err, 'error');
+        }
+      });
+    }
+  }
+</script>
+
+<fieldset>
+	<legend>MySQL server</legend>
+	<p data-i18n="pair.start.intro">intro</p>
+
+	<label for="name">Name</label>
+	<input id="name" value="My MySQL server">
+	</br>
+	</br>
+	<label for="host">Host</label>
+	<input id="host">
+	<br>
+	<br>
+	<label for="port">MySQL server port</label>
+	<input id="port" type="number" value="3306">
+	<br>
+    <br>
+    <label for="username">Username</label>
+    <input id="username">
+    <br>
+    <br>
+    <label for="password">Password</label>
+    <input id="password" type="password">
+    <br>
+    <br>
+    <label for="db">Database</label>
+    <input id="db">
+    <br>
+	<button onClick="addDevice()" data-i18n="pair.start.save">Save</button>
+
+</fieldset>

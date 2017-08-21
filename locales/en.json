@@ -1,0 +1,9 @@
+{
+  "pair": {
+    "start": {
+      "intro": "Welcome ",
+      "save": "Save",
+      "required": "Please make sure all fields are filled in."
+    }
+  }
+}

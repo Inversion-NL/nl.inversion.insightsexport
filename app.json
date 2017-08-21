@@ -1,0 +1,137 @@
+{
+    "id": "nl.inversion.insightsexport",
+    "sdk": 2,
+    "name": {
+        "en": "Insights to SQL",
+        "nl": "Inzichten naar SQL"
+    },
+    "description": {
+        "en": "Exports your Insights data periodically to a SQL server",
+        "nl": "Exporteerd uw Inzichten gegevens periodiek naar een SQL server"
+    },
+    "category": "tools",
+    "version": "0.0.1",
+    "compatibility": ">=1.5.0",
+    "author": {
+        "name": "Inversion NL",
+        "email": "nl.inversion@gmail.com"
+    },
+    "permissions": [
+      "homey:manager:api"
+    ],
+    "drivers": [
+        {
+            "id": "mysql_server",
+            "name": {
+                "en": "MySQL server",
+                "nl": "MySQL server"
+            },
+            "class": "other",
+            "capabilities": [],
+            "pair": [{
+                "id": "start"
+              }],
+            "settings": [{
+                "type": "group",
+                "label": {
+                    "en": "Settings",
+                    "nl": "Instellingen"
+                },
+                "children": [
+                    {
+                      "id": "name",
+                      "type": "text",
+                      "label": {
+                        "en": "Name",
+                        "nl": "Naam"
+                      },
+                      "value": "MySQL Server",
+                      "hint": {
+                        "en": "Enter the name of the server so you know later on which server this is",
+                        "nl": "Geef de server een naam zodat u later nog weet welke server dit is"
+                      }
+                    },
+                    {
+                        "id": "host",
+                        "type": "text",
+                        "label": {
+                            "en": "Host name or IP address",
+                            "nl": "Host naam of IP adres"
+                        },
+                        "value": "host",
+                        "hint": {
+                            "en": "Enter the host name or IP address on which the server is reachable for Homey",
+                            "nl": "Geef het host naam of IP address op waarop de server bereikbaar is voor Homey"
+                        }
+                    },
+                    {
+                        "id": "port",
+                        "type": "number",
+                        "label": {
+                            "en": "MySQL port",
+                            "nl": "MySQL poort"
+                        },
+                        "value": 3306,
+                        "hint": {
+                          "en": "Enter the port number used by your MySQL server. Default is 3306",
+                          "nl": "Geef het poort nummer op van uw MySQL server. Standaard is 3306"
+                        }
+                    },
+                    {
+                      "id": "username",
+                      "type": "text",
+                      "label": {
+                        "en": "Username",
+                        "nl": "Gebruikersnaam"
+                      },
+                      "value": "user",
+                      "hint": {
+                        "en": "Enter the username with sufficient rights",
+                        "nl": "Geef een gebruikersnaam met voldoende rechten"
+                      }
+                    },
+                    {
+                      "id": "password",
+                      "type": "text",
+                      "label": {
+                        "en": "Password",
+                        "nl": "Wachtwoord"
+                      },
+                      "value": "password",
+                      "hint": {
+                        "en": "Enter the password",
+                        "nl": "Geef het wachtwoord op"
+                      }
+                    }
+                ]
+            }],
+            "flow": {
+              "actions":[{
+                "id": "start_export",
+                "title": {
+                  "en": "Start export to MySQL"
+                },
+                "args": [{
+                  "name": "mysql_server",
+                  "type": "device",
+                  "filter": "driver_id=mysql_server"
+                }]
+              }],
+              "triggers": [
+                {
+                  "id": "export_completed",
+                  "title": {
+                    "en": "Finished the export"
+                  },
+                  "args": [
+                    {
+                      "name": "mysql_server",
+                      "type": "device",
+                      "filter": "driver_id=mysql_server"
+                    }
+                  ]
+                }]
+            }
+        }
+    ]
+}
